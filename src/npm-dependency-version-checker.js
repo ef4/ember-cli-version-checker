@@ -2,6 +2,7 @@
 
 const resolve = require('resolve');
 const DependencyVersionChecker = require('./dependency-version-checker');
+const getProject = require('./get-project');
 
 class NPMDependencyVersionChecker extends DependencyVersionChecker {
   constructor(parent, name) {
@@ -12,7 +13,7 @@ class NPMDependencyVersionChecker extends DependencyVersionChecker {
     let jsonPath;
     try {
       jsonPath = resolve.sync(this.name + '/package.json', {
-        basedir: addon.root,
+        basedir: addon.root || getProject(addon).root,
       });
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
